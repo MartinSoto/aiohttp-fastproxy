@@ -1,0 +1,5 @@
+{
+    "python.pythonPath": "/root/.virtualenvs/fastproxy/bin/python",
+    "editor.formatOnSave": true,
+    "python.formatting.provider": "black"
+}

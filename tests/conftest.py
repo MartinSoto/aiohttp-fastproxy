@@ -1,6 +1,11 @@
+import aiohttp
 from aiohttp import web
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
+
+import pytest
+
+from fastproxy import fastproxy
 
 
 @asynccontextmanager
@@ -52,3 +57,22 @@ async def downstream_app(*,
 
     async with run_app(app, host=host, port=port):
         yield request_info
+
+
+@pytest.yield_fixture
+async def proxy_app_setup():
+    proxy_app = web.Application()
+    proxy_app.add_routes([
+        web.route("*", "/{app_path:.*}",
+                  fastproxy.make_proxy(proxy_app, "http://localhost:9090"))
+    ])
+
+    async with downstream_app() as req_info:
+        async with run_app(proxy_app):
+            yield req_info
+
+
+@pytest.yield_fixture
+async def http_client_session():
+    async with aiohttp.ClientSession() as session:
+        yield session

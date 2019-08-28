@@ -31,13 +31,3 @@ def make_proxy(app, base_url):
             return response
 
     return proxy
-
-
-def create_app():
-    app = web.Application()
-    app.add_routes([
-        web.route("*", "/{app_path:.*}",
-                  make_proxy(app, "http://localhost:9090"))
-    ])
-
-    return app

@@ -1,0 +1,24 @@
+version: '3.5'
+
+services:
+  devshell:
+    image: python-devshell
+    build:
+      context: .
+    volumes:
+      - ${PWD}/..:${PWD}/..
+      - ~:/root/winhome
+      - python-venv:/root/.virtualenvs
+      - /var/run/docker.sock:/var/run/docker.sock
+      - vscode-data:/root/.vscode-server
+      - user-persistent-data:/root/.persistent-data
+    environment:
+      SHELL: /bin/bash
+      HISTFILE: /root/.persistent-data/bash_history
+      VIRTUALENVWRAPPER_PYTHON: /usr/bin/python3
+    command: sleep infinity
+
+volumes:
+  vscode-data: {}
+  user-persistent-data: {}
+  python-venv: {}

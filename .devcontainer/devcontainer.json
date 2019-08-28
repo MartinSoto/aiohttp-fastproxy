@@ -1,0 +1,16 @@
+{
+    "name": "WAS Publisher",
+    "dockerComposeFile": [
+        "docker-compose.yml"
+    ],
+    "extensions": [
+        "eamodio.gitlens",
+        "humao.rest-client",
+        "JanBn.git-last-commit-message",
+        "ms-azuretools.vscode-docker",
+        "ms-python.python",
+        "VisualStudioExptTeam.vscodeintellicode"
+    ],
+    "service": "devshell",
+    "shutdownAction": "stopCompose"
+}

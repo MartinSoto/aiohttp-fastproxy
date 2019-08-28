@@ -16,9 +16,10 @@ def make_proxy(app, base_url):
         if request.can_read_body:
             remote_req_params["data"] = request.content
 
-        async with client_sess.request(
-            request.method, target_url, headers=request.headers, **remote_req_params
-        ) as remote_response:
+        async with client_sess.request(request.method,
+                                       target_url,
+                                       headers=request.headers,
+                                       **remote_req_params) as remote_response:
             response = web.StreamResponse(headers=remote_response.headers)
             await response.prepare(request)
 
@@ -34,12 +35,9 @@ def make_proxy(app, base_url):
 
 def create_app():
     app = web.Application()
-    app.add_routes(
-        [web.route("*", "/{app_path:.*}", make_proxy(app, "http://localhost:9090"))]
-    )
+    app.add_routes([
+        web.route("*", "/{app_path:.*}",
+                  make_proxy(app, "http://localhost:9090"))
+    ])
 
     return app
-
-
-if __name__ == "__main__":
-    web.run_app(create_app())

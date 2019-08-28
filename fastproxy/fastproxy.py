@@ -1,18 +1,16 @@
 import aiohttp
 from aiohttp import web
-
-
-async def writestr(response, str_val, sep="\n"):
-    await response.write((str(str_val) + sep).encode("utf-8"))
+from yarl import URL
 
 
 def make_proxy(app, base_url):
+    base_url = URL(base_url)
+
     client_sess = aiohttp.ClientSession()
     app.on_cleanup.append(lambda app: client_sess.close())
 
     async def proxy(request):
-        target_url = base_url + request.path
-        # request.content can be passed directly to a downstream request as the data parameter. See the client quickstart.
+        target_url = base_url / request.match_info["app_path"]
 
         remote_req_params = {}
         if request.can_read_body:
@@ -37,7 +35,7 @@ def make_proxy(app, base_url):
 def create_app():
     app = web.Application()
     app.add_routes(
-        [web.route("*", "/{tail:.*}", make_proxy(app, "http://localhost:9090"))]
+        [web.route("*", "/{app_path:.*}", make_proxy(app, "http://localhost:9090"))]
     )
 
     return app

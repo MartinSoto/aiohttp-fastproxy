@@ -1,20 +1,21 @@
-from aiohttp import web
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
+from typing import AsyncGenerator, Optional
 
+from aiohttp import web
 from yarl import URL
 
 
 @dataclass
 class AppInfo:
-    app: web.Application = None
-    url: URL = None
+    app: Optional[web.Application] = None
+    url: Optional[URL] = None
 
 
 @asynccontextmanager
 async def run_app(app: web.Application,
                   host: str = "0.0.0.0",
-                  port: int = 8080) -> AppInfo:
+                  port: int = 8080) -> AsyncGenerator[AppInfo, None]:
     runner = web.AppRunner(app)
     await runner.setup()
     site = web.TCPSite(runner, host, port)
@@ -27,15 +28,16 @@ async def run_app(app: web.Application,
 
 @dataclass
 class DownstreamAppInfo(AppInfo):
-    request: web.Request = None
-    body: str = None
+    request: Optional[web.Request] = None
+    body: Optional[bytes] = None
 
 
 @asynccontextmanager
 async def downstream_app(*,
                          response: web.Response = None,
                          host: str = "0.0.0.0",
-                         port: int = 9090) -> DownstreamAppInfo:
+                         port: int = 9090
+                         ) -> AsyncGenerator[DownstreamAppInfo, None]:
     request_info = DownstreamAppInfo()
 
     if response is None:

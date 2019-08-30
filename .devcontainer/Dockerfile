@@ -1,10 +1,5 @@
 FROM martinsoto/devshell-python
 
-RUN pip3 install \
-    mypy \
-    pyflakes \
-    pytest \
-    virtualenvwrapper \
-    yapf
-
-RUN echo 'source /usr/local/bin/virtualenvwrapper.sh' >> /root/.bashrc
+COPY requirements.txt /tmp/requirements.txt
+RUN pip3 install -r /tmp/requirements.txt && \
+    rm /tmp/requirements.txt

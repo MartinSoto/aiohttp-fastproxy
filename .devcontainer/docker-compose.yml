@@ -8,7 +8,6 @@ services:
     volumes:
       - ${PWD}/..:${PWD}/..
       - ~:/root/hosthome
-      - python-venv:/root/.virtualenvs
       - /var/run/docker.sock:/var/run/docker.sock
       - vscode-data:/root/.vscode-server
       - user-persistent-data:/root/.persistent-data
@@ -24,6 +23,3 @@ volumes:
 
   user-persistent-data:
     name: python-user-persistent-data
-
-  python-venv:
-    name: python-venv

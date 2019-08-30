@@ -1,8 +1,19 @@
 {
-    "name": "WAS Publisher",
+    "name": "aiohttp fastproxy",
     "dockerComposeFile": [
         "docker-compose.yml"
     ],
+    "settings": {
+        "python.pythonPath": "/root/.virtualenvs/fastproxy/bin/python",
+        "python.formatting.provider": "yapf",
+        "python.testing.pytestArgs": [
+            "tests"
+        ],
+        "python.testing.unittestEnabled": false,
+        "python.testing.nosetestsEnabled": false,
+        "python.testing.pytestEnabled": true,
+        "python.linting.mypyEnabled": true
+    },
     "extensions": [
         "eamodio.gitlens",
         "humao.rest-client",
